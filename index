@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cuestionario de Funciones</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        canvas { max-width: 600px; margin: 20px 0; }
+        .question { margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+
+<h1>Cuestionario de Funciones</h1>
+<form id="quizForm">
+    <div class="question">
+        <label for="functionType">¿Cuál es el tipo de función representada en la gráfica?</label>
+        <canvas id="functionChart"></canvas>
+        <input type="text" id="functionType" required>
+    </div>
+    <button type="submit">Enviar</button>
+</form>
+
+<div id="result" style="display:none;">
+    <h2>Resultados</h2>
+    <p id="score"></p>
+    <p id="feedback"></p>
+</div>
+
+<script>
+    const correctAnswer = "cuadrática"; // Cambia esto según el tipo de función
+    const ctx = document.getElementById('functionChart').getContext('2d');
+    const functionChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: [-10, -5, 0, 5, 10],
+            datasets: [{
+                label: 'y = x²',
+                data: [-100, -25, 0, 25, 100],
+                borderColor: 'rgba(75, 192, 192, 1)',
+                fill: false,
+            }]
+        },
+        options: {
+            scales: {
+                y: { beginAtZero: true }
+            }
+        }
+    });
+
+    document.getElementById('quizForm').addEventListener('submit', function (event) {
+        event.preventDefault();
+        const userAnswer = document.getElementById('functionType').value.toLowerCase();
+        let score = (userAnswer === correctAnswer) ? 1 : 0;
+        document.getElementById('score').innerText = `Tu puntuación es: ${score}`;
+        document.getElementById('feedback').innerText = (score === 1) ? "¡Correcto!" : "Incorrecto. La respuesta correcta es: " + correctAnswer;
+        document.getElementById('result').style.display = 'block';
+        
+        // Aquí puedes guardar los resultados en un servicio externo si lo deseas
+    });
+</script>
+
+</body>
+</html>
